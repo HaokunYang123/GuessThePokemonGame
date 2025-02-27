@@ -53,14 +53,81 @@ function revealPokemon() {
     const img = new Image();
     img.src = currentPokemon.image;
     img.onload = () => {
+        // Add dramatic reveal sound effect (optional)
+        const revealSound = new Audio('assets/sounds/reveal.mp3');
+        revealSound.volume = 0.5;
+        revealSound.play().catch(() => {}); // Catch and ignore audio play errors
+        
+        // Start the reveal animation
         pokemonBox.style.backgroundImage = `url(${currentPokemon.image})`;
         pokemonBox.classList.add('reveal');
+        
+        // Update result message with dramatic timing
+        const resultMessage = document.getElementById('result-message');
+        resultMessage.style.opacity = '0';
+        
+        setTimeout(() => {
+            resultMessage.textContent = `It's ${currentPokemon.name.toUpperCase()}!`;
+            resultMessage.style.opacity = '1';
+            resultMessage.style.transform = 'scale(1.1)';
+            
+            setTimeout(() => {
+                resultMessage.style.transform = 'scale(1)';
+                // Show play again prompt after the reveal
+                showPlayAgainPrompt();
+            }, 200);
+        }, 1500);
         
         // Reset animation state after completion
         setTimeout(() => {
             isAnimating = false;
-        }, 1000);
+        }, 2500);
     };
+    
+    img.onerror = () => {
+        // Fallback if image fails to load
+        console.error('Failed to load Pokemon image:', currentPokemon.image);
+        pokemonBox.style.backgroundColor = '#e74c3c';
+        isAnimating = false;
+    };
+}
+
+function showPlayAgainPrompt() {
+    const gameControls = document.querySelector('.game-controls');
+    
+    // Clear existing controls
+    gameControls.innerHTML = `
+        <button id="play-again-btn" class="success-btn">Play Again</button>
+    `;
+    
+    // Add event listener to new button
+    document.getElementById('play-again-btn').addEventListener('click', () => {
+        if (!isAnimating) {
+            resetGameControls();
+            initializeGame();
+        }
+    });
+}
+
+function resetGameControls() {
+    const gameControls = document.querySelector('.game-controls');
+    
+    // Restore original controls
+    gameControls.innerHTML = `
+        <input type="text" id="guess-input" placeholder="Enter Pokémon name">
+        <button id="submit-btn">Submit</button>
+        <button id="hint-btn">Get Hint (<span id="hints-left">2</span> left)</button>
+    `;
+    
+    // Reattach event listeners
+    document.getElementById('submit-btn').addEventListener('click', checkGuess);
+    document.getElementById('hint-btn').addEventListener('click', showHint);
+    document.getElementById('guess-input').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            checkGuess();
+        }
+    });
 }
 
 function initializeGame() {
@@ -173,7 +240,6 @@ function showHint() {
 // Event Listeners
 document.getElementById('submit-btn').addEventListener('click', checkGuess);
 document.getElementById('hint-btn').addEventListener('click', showHint);
-document.getElementById('new-game-btn').addEventListener('click', initializeGame);
 
 // Handle Enter key and prevent form submission
 document.getElementById('guess-input').addEventListener('keydown', (e) => {

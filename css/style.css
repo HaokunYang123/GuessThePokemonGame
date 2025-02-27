@@ -30,6 +30,8 @@ h1 {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
 }
 
 .game-controls {
@@ -72,6 +74,7 @@ button:disabled {
     margin: 20px 0;
     font-size: 18px;
     font-weight: bold;
+    transition: all 0.3s ease;
 }
 
 #hints-container {
@@ -95,18 +98,58 @@ button:disabled {
 
 .reveal {
     background-color: transparent !important;
-    animation: revealAnimation 1s ease-in-out;
+    animation: revealAnimation 2.5s ease-in-out forwards;
     user-select: none;
 }
 
 @keyframes revealAnimation {
     0% {
-        filter: brightness(0);
-        transform: scale(0.9);
+        filter: brightness(0) blur(20px);
+        transform: scale(1.1);
+    }
+    40% {
+        filter: brightness(0.3) blur(15px);
+        transform: scale(1.05);
+    }
+    60% {
+        filter: brightness(0.5) blur(10px);
+        transform: scale(1.02);
+    }
+    80% {
+        filter: brightness(0.8) blur(5px);
+        transform: scale(1.01);
     }
     100% {
-        filter: brightness(1);
+        filter: brightness(1) blur(0);
         transform: scale(1);
+    }
+}
+
+/* Add a dramatic flash effect */
+.reveal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    animation: flashEffect 2.5s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes flashEffect {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    20% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
     }
 }
 
@@ -139,4 +182,42 @@ input[type="text"]:focus {
 .loading {
     opacity: 0.7;
     pointer-events: none;
+}
+
+/* Optional: Add some particle effects for more drama */
+.reveal::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+    transform: translate(-50%, -50%) scale(0);
+    animation: particleEffect 2s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes particleEffect {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+/* Add styles for the success button */
+.success-btn {
+    background-color: #27ae60 !important;
+    font-size: 18px !important;
+    padding: 15px 30px !important;
+    transition: all 0.3s ease;
+}
+
+.success-btn:hover {
+    background-color: #219a52 !important;
+    transform: scale(1.05);
 } 
