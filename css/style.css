@@ -1,0 +1,142 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.game-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.pokemon-display {
+    margin: 20px 0;
+}
+
+#pokemon-box {
+    width: 200px;
+    height: 200px;
+    background-color: #000;
+    margin: 0 auto;
+    border-radius: 10px;
+    transition: background-color 0.5s ease;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.game-controls {
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #3498db;
+    border-radius: 5px;
+    width: 200px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    outline: none;
+}
+
+#result-message {
+    margin: 20px 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#hints-container {
+    margin: 20px 0;
+}
+
+.hint {
+    color: #e67e22;
+    font-style: italic;
+    margin: 10px 0;
+    transition: opacity 0.3s ease;
+}
+
+#new-game-btn {
+    background-color: #27ae60;
+}
+
+#new-game-btn:hover {
+    background-color: #219a52;
+}
+
+.reveal {
+    background-color: transparent !important;
+    animation: revealAnimation 1s ease-in-out;
+    user-select: none;
+}
+
+@keyframes revealAnimation {
+    0% {
+        filter: brightness(0);
+        transform: scale(0.9);
+    }
+    100% {
+        filter: brightness(1);
+        transform: scale(1);
+    }
+}
+
+/* Add focus styles for accessibility */
+input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+/* Improve mobile responsiveness */
+@media (max-width: 480px) {
+    .game-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    input[type="text"] {
+        width: 80%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    button {
+        width: 80%;
+        margin: 5px 0;
+    }
+}
+
+/* Add loading state */
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+} 
